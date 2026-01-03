@@ -1,9 +1,13 @@
-:root {
+/* :root {
   --primary: #da2576;
 }
 
 .text-primary {
   color: var(--primary);
+} */
+
+* {
+  font-family: 'poppins', sans-serif;
 }
 
 #root {

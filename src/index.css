@@ -8,3 +8,16 @@
   --text-color-primary: #da2576;
   --color-primary: #da2576;
 }
+
+@theme {
+  --color-primary: #da2576;
+  --color-primary-foreground: #fdf2f8;
+  --color-secondary: #505058;
+  --color-secondary-foreground: #fafafa;
+  --color-accent: #fff0f1;
+  --color-accent-foreground: #f43e60;
+}
+
+.bg-secondary {
+  background-color: var(--color-secondary);
+}

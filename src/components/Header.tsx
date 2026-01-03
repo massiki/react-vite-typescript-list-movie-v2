@@ -7,7 +7,7 @@ const Header = () => {
       <div className="container flex h-16 items-center justify-between">
         <Link to="/" className="flex items-center gap-2 transition-colors hover:text-primary">
           <Film className="h-8 w-8 text-primary" />
-          <span className="text-xl font-bold hover:color-primary">MovieMassF</span>
+          <span className="text-xl font-bold hover:color-primary">MovieF</span>
         </Link>
         <nav className="flex items-center gap-6">
           <Link
