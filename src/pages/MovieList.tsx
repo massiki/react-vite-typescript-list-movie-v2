@@ -1,6 +1,7 @@
 import { Film, TrendingUp } from "lucide-react"
 import Header from "../components/Header"
 import MovieCard from "../components/MovieCard"
+import Footer from "../components/Footer"
 
 const MovieList = () => {
   return (
@@ -61,13 +62,7 @@ const MovieList = () => {
       </main>
 
       {/* Footer */}
-      <footer className="border-t border-border bg-card py-8">
-        <div className="container text-center">
-          <p className="text-sm text-muted-foreground">
-            © 2026 MovieHub. All movie data is for demonstration purposes.
-          </p>
-        </div>
-      </footer>
+      <Footer />
     </div>
   )
 }
