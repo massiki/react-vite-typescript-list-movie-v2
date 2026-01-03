@@ -1,10 +1,16 @@
+import { Route, Routes } from 'react-router'
 import './App.css'
+import MovieList from './pages/MovieList'
+import NotFound from './pages/NotFound'
 
 function App() {
 
   return (
     <>
-      <h1 className='text-2xl text-red-500'>Testing Tailwind CSS</h1>
+      <Routes>
+        <Route path='/' element={<MovieList />} />
+        <Route path='*' element={<NotFound />} />
+      </Routes>
     </>
   )
 }
