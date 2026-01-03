@@ -10,7 +10,7 @@ const MovieCard = () => {
     >
       <div className="relative overflow-hidden rounded-lg bg-card shadow-md transition-all duration-300 hover:shadow-xl hover:-translate-y-2">
         {/* Poster Image */}
-        <div className="aspect-[2/3] overflow-hidden bg-muted">
+        <div className="aspect-2/3 overflow-hidden bg-muted">
           <img
             src='https://thumbor.prod.vidiocdn.com/dBQbr6Yp29QnXIyK-MXYwSitybw=/filters:quality(70)/vidio-media-production/uploads/image/source/21790/b4895e.jpg'
             alt='movie title'
@@ -28,7 +28,7 @@ const MovieCard = () => {
 
         {/* Content */}
         <div className="p-4">
-          <h3 className="mb-2 line-clamp-1 text-base font-semibold text-card-foreground transition-colors group-hover:text-primary">
+          <h3 className="text-start mb-2 line-clamp-1 text-base font-semibold text-card-foreground transition-colors group-hover:text-primary">
             {/* {movie.title} */}
             Naruto
           </h3>
