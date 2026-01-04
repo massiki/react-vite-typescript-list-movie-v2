@@ -2,8 +2,12 @@ import { Film, TrendingUp } from "lucide-react"
 import Header from "../components/Header"
 import MovieCard from "../components/MovieCard"
 import Footer from "../components/Footer"
+import { apiMovies } from "../api/apiMovies"
 
 const MovieList = () => {
+  const movies = apiMovies()
+  console.log(movies)
+
   return (
     <div className="min-h-screen bg-background">
       <Header />
