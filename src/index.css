@@ -19,7 +19,3 @@
   --color-card-foreground: #18181b;
   --color-border: #d2d2d5;
 }
-
-.bg-secondary {
-  background-color: var(--color-secondary);
-}
