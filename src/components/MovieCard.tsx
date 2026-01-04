@@ -8,7 +8,7 @@ const MovieCard = () => {
       to={`/movie/1`}
       className="group block"
     >
-      <div className="relative overflow-hidden rounded-lg bg-card shadow-md transition-all duration-300 hover:shadow-xl hover:-translate-y-2">
+      <div className="relative overflow-hidden rounded-3xl bg-card shadow-md transition-all duration-300 hover:shadow-xl hover:-translate-y-2">
         {/* Poster Image */}
         <div className="aspect-2/3 overflow-hidden bg-muted">
           <img
