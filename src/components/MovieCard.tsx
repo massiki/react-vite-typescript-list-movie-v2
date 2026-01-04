@@ -1,11 +1,21 @@
-import { Calendar, Star, TrendingUp } from "lucide-react"
+import { Calendar, Star } from "lucide-react"
 import { Link } from "react-router"
 
-import type { movieType } from "../types/movieType"
+import type { genresType, movieType } from "../lib/utility"
+import { useEffect, useState } from "react"
+import { apiGenres } from "../api/apiGenres"
 
 const pathUrl = import.meta.env.VITE_PATH_URL
 
 const MovieCard = ({ movie }: { movie: movieType }) => {
+  const [genres, setGenres] = useState<genresType[]>([])
+
+  useEffect(() => {
+    apiGenres().then((result) => {
+      setGenres(result)
+    })
+  }, [])
+
   return (
     <Link
       to={`/movie/${movie.id}`}
@@ -47,11 +57,16 @@ const MovieCard = ({ movie }: { movie: movieType }) => {
 
           {/* Popularity */}
           <div className="flex flex-wrap gap-1">
-            <TrendingUp className="h-5 w-5" />
-            <span
-              className="rounded-full bg-accent px-2 py-0.5 text-xs text-accent-foreground"            >
-              {movie.popularity}
-            </span>
+            {movie?.genre_ids.slice(0, 2).map((genreId) => {
+              const genre = genres.find((g) => Number(g.id) === Number(genreId))
+              return (
+                <span
+                  key={genreId}
+                  className="rounded-full bg-accent px-2 py-0.5 text-xs text-accent-foreground"            >
+                  {genre?.name}
+                </span>
+              )
+            })}
           </div>
         </div>
 
