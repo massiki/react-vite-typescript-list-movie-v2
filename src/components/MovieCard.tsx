@@ -2,20 +2,10 @@ import { Calendar, Star } from "lucide-react"
 import { Link } from "react-router"
 
 import type { genresType, movieType } from "../lib/utility"
-import { useEffect, useState } from "react"
-import { apiGenres } from "../api/apiGenres"
 
 const pathUrl = import.meta.env.VITE_PATH_URL
 
-const MovieCard = ({ movie }: { movie: movieType }) => {
-  const [genres, setGenres] = useState<genresType[]>([])
-
-  useEffect(() => {
-    apiGenres().then((result) => {
-      setGenres(result)
-    })
-  }, [])
-
+const MovieCard = ({ movie, genres }: { movie: movieType, genres: genresType[] }) => {
   return (
     <Link
       to={`/movie/${movie.id}`}
