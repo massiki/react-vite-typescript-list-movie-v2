@@ -5,14 +5,21 @@ import Footer from "../components/Footer"
 import { apiMovies } from "../api/apiMovies"
 import { useEffect, useState } from "react"
 
-import type { movieType } from "../lib/utility"
+import type { genresType, movieType } from "../lib/utility"
+import { apiGenres } from "../api/apiGenres"
 
 const MovieList = () => {
   const [movies, setMovies] = useState<movieType[]>([])
-
+  const [genres, setGenres] = useState<genresType[]>([])
   useEffect(() => {
     apiMovies().then((result) => {
       setMovies(result)
+    })
+  }, [])
+
+  useEffect(() => {
+    apiGenres().then((result) => {
+      setGenres(result)
     })
   }, [])
 
@@ -56,7 +63,7 @@ const MovieList = () => {
 
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:gap-6">
           {movies.map((movie) => (
-            <MovieCard key={movie.id} movie={movie} />
+            <MovieCard key={movie.id} movie={movie} genres={genres} />
           ))}
         </div>
       </main>
