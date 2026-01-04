@@ -3,10 +3,18 @@ import Header from "../components/Header"
 import MovieCard from "../components/MovieCard"
 import Footer from "../components/Footer"
 import { apiMovies } from "../api/apiMovies"
+import { useEffect, useState } from "react"
+
+import type { movieType } from "../types/movieType"
 
 const MovieList = () => {
-  const movies = apiMovies()
-  console.log(movies)
+  const [movies, setMovies] = useState<movieType[]>([])
+
+  useEffect(() => {
+    apiMovies().then((result) => {
+      setMovies(result)
+    })
+  }, [])
 
   return (
     <div className="min-h-screen bg-background">
@@ -30,10 +38,6 @@ const MovieList = () => {
             </p>
           </div>
         </div>
-
-        {/* Decorative Elements */}
-        {/* <div className="absolute -right-20 -top-20 h-64 w-64 rounded-full bg-primary/5 blur-3xl" />
-        <div className="absolute -bottom-20 -left-20 h-64 w-64 rounded-full bg-accent/10 blur-3xl" /> */}
       </section>
 
       {/* Movies Grid */}
@@ -46,22 +50,14 @@ const MovieList = () => {
             </h2>
           </div>
           <span className="rounded-full bg-secondary px-3 py-1 text-sm font-medium text-secondary-foreground">
-            {/* {movies.length}  */} 5 movies
+            {movies.length} Movies
           </span>
         </div>
 
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:gap-6">
-          {/* {movies.map((movie) => (
+          {movies.map((movie) => (
             <MovieCard key={movie.id} movie={movie} />
-          ))} */}
-          <MovieCard />
-          <MovieCard />
-          <MovieCard />
-          <MovieCard />
-          <MovieCard />
-          <MovieCard />
-          <MovieCard />
-          <MovieCard />
+          ))}
         </div>
       </main>
 
