@@ -5,7 +5,7 @@ import Footer from "../components/Footer"
 import { apiMovies } from "../api/apiMovies"
 import { useEffect, useState } from "react"
 
-import type { movieType } from "../types/movieType"
+import type { movieType } from "../lib/utility"
 
 const MovieList = () => {
   const [movies, setMovies] = useState<movieType[]>([])

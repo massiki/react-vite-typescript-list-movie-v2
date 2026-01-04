@@ -15,4 +15,10 @@ type movieType = {
   vote_count: number
 }
 
-export type { movieType }
+
+type genresType = {
+  id: number,
+  name: string,
+}
+
+export type { movieType, genresType }

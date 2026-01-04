@@ -1,8 +1,32 @@
-import { Link } from "react-router"
+import { Link, useParams } from "react-router"
 import Header from "../components/Header"
 import { ArrowLeft, Calendar, Globe, Star, Users } from "lucide-react"
+import { apiMovies } from "../api/apiMovies"
+import { useEffect, useState } from "react"
+import { apiGenres } from "../api/apiGenres"
+
+import type { movieType, genresType } from "../lib/utility"
+
+const pathUrl = import.meta.env.VITE_PATH_URL
 
 const MovieDetail = () => {
+  const { id } = useParams()
+  const [movie, setMovie] = useState<movieType | null>(null)
+  const [genres, setGenres] = useState<genresType[]>([])
+
+  useEffect(() => {
+    apiMovies().then((result) => {
+      const foundMovie = result.find((item: movieType) => Number(item.id) === Number(id))
+      setMovie(foundMovie)
+    })
+  }, [id])
+
+  useEffect(() => {
+    apiGenres().then((result) => {
+      setGenres(result)
+    })
+  }, [])
+
   return (
     <div className="min-h-screen bg-background">
       <Header />
@@ -10,8 +34,8 @@ const MovieDetail = () => {
       {/* Hero Backdrop */}
       <div className="relative h-[50vh] min-h-[400px] w-full overflow-hidden md:h-[60vh]">
         <img
-          src='https://thumbor.prod.vidiocdn.com/dBQbr6Yp29QnXIyK-MXYwSitybw=/filters:quality(70)/vidio-media-production/uploads/image/source/21790/b4895e.jpg'
-          alt='Naruto Shippuden The Movie'
+          src={`${pathUrl}/${movie?.backdrop_path}`}
+          alt={movie?.title}
           className="h-full w-full object-cover"
         />
         <div className="absolute inset-0 bg-linear-to-t from-background via-background/60 to-transparent" />
@@ -29,11 +53,9 @@ const MovieDetail = () => {
           <div className="mx-auto w-full max-w-[280px] md:mx-0 lg:max-w-[320px]">
             <div className="aspect-2/3 overflow-hidden rounded-lg bg-muted shadow-2xl">
               <img
-                src='https://thumbor.prod.vidiocdn.com/dBQbr6Yp29QnXIyK-MXYwSitybw=/filters:quality(70)/vidio-media-production/uploads/image/source/21790/b4895e.jpg'
-                alt='Naruto Shippuden The Movie'
+                src={`${pathUrl}${movie?.poster_path}`}
                 className="h-full w-full object-cover"
               />
-
             </div>
           </div>
 
@@ -41,10 +63,10 @@ const MovieDetail = () => {
           <div className="space-y-6 text-start">
             <div>
               <h1 className="mb-2 text-3xl font-bold text-foreground md:text-4xl lg:text-5xl">
-                Naruto Shippuden The Movie
+                {movie?.title}
               </h1>
               <p className="text-lg text-muted-foreground">
-                劇場版 NARUTO -ナルト- 疾風伝
+                {movie?.original_title}
               </p>
             </div>
 
@@ -53,43 +75,47 @@ const MovieDetail = () => {
               <div className="flex items-center gap-2 rounded-full bg-primary px-4 py-2 text-primary-foreground">
                 <Star className="h-5 w-5 fill-current" />
                 <span className="font-semibold">
-                  8.5
+                  {movie?.vote_average.toFixed(1)}
                 </span>
               </div>
 
               <div className="flex items-center gap-2 rounded-full bg-secondary px-4 py-2 text-secondary-foreground">
                 <Calendar className="h-4 w-4" />
-                <span>2009</span>
+                <span>
+                  {movie?.release_date
+                    ? new Date(movie.release_date).toLocaleDateString("en-EN", {
+                      year: "numeric",
+                      month: "long",
+                      day: "numeric",
+                    })
+                    : "N/A"}
+                </span>
               </div>
 
               <div className="flex items-center gap-2 rounded-full bg-secondary px-4 py-2 text-secondary-foreground">
                 <Users className="h-4 w-4" />
-                <span>1,067 votes</span>
+                <span>{movie?.vote_count} votes</span>
               </div>
 
               <div className="flex items-center gap-2 rounded-full bg-secondary px-4 py-2 text-secondary-foreground">
                 <Globe className="h-4 w-4" />
-                <span className="uppercase">JA</span>
+                <span className="uppercase">{movie?.original_language}</span>
               </div>
             </div>
 
-            {/* Genres */}
+            {/* gender */}
             <div className="flex flex-wrap gap-2">
-              <span
-                className="rounded-full bg-accent px-4 py-1.5 text-sm font-medium text-accent-foreground"
-              >
-                Animation
-              </span>
-              <span
-                className="rounded-full bg-accent px-4 py-1.5 text-sm font-medium text-accent-foreground"
-              >
-                Action
-              </span>
-              <span
-                className="rounded-full bg-accent px-4 py-1.5 text-sm font-medium text-accent-foreground"
-              >
-                Fantasy
-              </span>
+              {movie?.genre_ids.map((genreId) => {
+                const genre = genres.find((g) => Number(g.id) === Number(genreId))
+                return (
+                  <span
+                    key={genreId}
+                    className="rounded-full bg-accent px-4 py-1.5 text-sm font-medium text-accent-foreground"
+                  >
+                    {genre?.name}
+                  </span>
+                )
+              })}
             </div>
 
             {/* Overview */}
@@ -98,7 +124,7 @@ const MovieDetail = () => {
                 Overview
               </h2>
               <p className="leading-relaxed text-muted-foreground">
-                Demons that once almost destroyed the world, are revived by someone. To prevent the world from being destroyed, the demon has to be sealed and the only one who can do it is the shrine maiden Shion from the country of demons.
+                {movie?.overview}
               </p>
             </div>
 
@@ -111,25 +137,31 @@ const MovieDetail = () => {
                 <div>
                   <dt className="text-muted-foreground">Release Date</dt>
                   <dd className="font-medium text-card-foreground">
-                    2007-08-04
+                    {movie?.release_date
+                      ? new Date(movie.release_date).toLocaleDateString("en-EN", {
+                        year: "numeric",
+                        month: "long",
+                        day: "numeric",
+                      })
+                      : "N/A"}
                   </dd>
                 </div>
                 <div>
                   <dt className="text-muted-foreground">Original Language</dt>
                   <dd className="font-medium uppercase text-card-foreground">
-                    JA
+                    {movie?.original_language}
                   </dd>
                 </div>
                 <div>
                   <dt className="text-muted-foreground">Popularity</dt>
                   <dd className="font-medium text-card-foreground">
-                    7.3
+                    {movie?.popularity}
                   </dd>
                 </div>
                 <div>
                   <dt className="text-muted-foreground">Adult Content</dt>
                   <dd className="font-medium text-card-foreground">
-                    No
+                    {movie?.adult ? 'Yes' : 'No'}
                   </dd>
                 </div>
               </dl>
