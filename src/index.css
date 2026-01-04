@@ -11,7 +11,13 @@
   --color-secondary-foreground: #fafafa;
   --color-accent: #fff0f1;
   --color-accent-foreground: #f43e60;
+  --color-muted: #18181b;
   --color-muted-foreground: #18181b;
+  --color-background: #f2f2f3;
+  --color-foreground: #18181b;
+  --color-card: #fafafa;
+  --color-card-foreground: #18181b;
+  --color-border: #d2d2d5;
 }
 
 .bg-secondary {

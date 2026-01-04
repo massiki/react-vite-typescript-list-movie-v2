@@ -3,7 +3,7 @@ import { Link } from "react-router";
 
 const Header = () => {
   return (
-    <header className="sticky top-0 z-50 w-full border-zinc-300 border-b border-border backdrop-blur">
+    <header className="sticky top-0 z-50 w-full border-b border-border backdrop-blur">
       <div className="container flex h-16 items-center justify-between">
         <Link to="/" className="flex items-center gap-2 transition-colors hover:text-primary">
           <Film className="h-8 w-8 text-primary" />
