@@ -13,7 +13,7 @@ const MovieList = () => {
   const [genres, setGenres] = useState<genresType[]>([])
   const [searchQuery, setSearchQuery] = useState<string>('')
   const [searchMovies, setSearchMovies] = useState<movieType[]>([])
-
+  
   useEffect(() => {
     apiMovies().then((result) => {
       setMovies(result)
@@ -86,13 +86,6 @@ const MovieList = () => {
                 <Search className="h-5 w-5" />
               </span>
             </div>
-            {/* <Input
-              type="text"
-              placeholder="Search movies..."
-              value={searchQuery}
-              onChange={(e) => handleSearch(e.target.value)}
-              className="pl-10"
-            /> */}
           </div>
         </div>
 
