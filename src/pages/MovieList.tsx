@@ -5,6 +5,7 @@ import Footer from "../components/Footer"
 import { apiMovies } from "../api/apiMovies"
 import { useEffect, useState } from "react"
 import { useDebounce } from "../hooks/useDebounce"
+import { apiSearch } from "../api/apiSearch"
 
 import type { genresType, movieType } from "../lib/utility"
 import { apiGenres } from "../api/apiGenres"
@@ -25,11 +26,9 @@ const MovieList = () => {
     })
   }, [])
 
-  const performSearch = () => {
+  const performSearch = async () => {
     if (searchQuery !== '') {
-      const result = movies.filter((movie: movieType) => {
-        return movie.title.toLowerCase().includes(searchQuery.toLowerCase())
-      })
+      const result = await apiSearch(searchQuery)
       setSearchMovies(result)
     } else {
       setSearchMovies(movies)
