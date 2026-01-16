@@ -26,6 +26,7 @@ const MovieList = () => {
     })
   }, [])
 
+
   const performSearch = async () => {
     if (searchQuery !== '') {
       const result = await apiSearch(searchQuery)
