@@ -26,6 +26,7 @@ const MovieList = () => {
     })
   }, [])
 
+  // console.log(movies)
 
   const performSearch = async () => {
     if (searchQuery !== '') {
