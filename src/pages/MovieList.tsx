@@ -4,6 +4,7 @@ import MovieCard from "../components/MovieCard"
 import Footer from "../components/Footer"
 import { apiMovies } from "../api/apiMovies"
 import { useEffect, useState } from "react"
+import { useDebounce } from "../hooks/useDebounce"
 
 import type { genresType, movieType } from "../lib/utility"
 import { apiGenres } from "../api/apiGenres"
@@ -13,7 +14,8 @@ const MovieList = () => {
   const [genres, setGenres] = useState<genresType[]>([])
   const [searchQuery, setSearchQuery] = useState<string>('')
   const [searchMovies, setSearchMovies] = useState<movieType[]>([])
-  
+  const { debounce } = useDebounce()
+
   useEffect(() => {
     apiMovies().then((result) => {
       setMovies(result)
@@ -23,7 +25,7 @@ const MovieList = () => {
     })
   }, [])
 
-  useEffect(() => {
+  const performSearch = () => {
     if (searchQuery !== '') {
       const result = movies.filter((movie: movieType) => {
         return movie.title.toLowerCase().includes(searchQuery.toLowerCase())
@@ -32,6 +34,11 @@ const MovieList = () => {
     } else {
       setSearchMovies(movies)
     }
+  }
+
+  useEffect(() => {
+    const debouncedSearch = debounce(performSearch, 1000)
+    debouncedSearch()
   }, [movies, searchQuery])
 
   return (
@@ -67,7 +74,7 @@ const MovieList = () => {
               Popular Movies
             </h2>
             <span className="rounded-full bg-secondary px-3 py-1 text-sm font-medium text-secondary-foreground">
-              {movies.length} Movies
+              {searchMovies.length} Movies
             </span>
           </div>
 
