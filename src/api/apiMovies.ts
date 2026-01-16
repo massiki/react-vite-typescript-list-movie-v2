@@ -5,8 +5,8 @@ const apiKey = import.meta.env.VITE_API_KEY
 
 const options = {
   method: 'GET',
-  url: `${baseUrl}`,
-  params: { page: '1', sort_by: 'created_at.asc' },
+  url: `${baseUrl}/movie/now_playing`,
+  // params: { page: '2', sort_by: 'created_at.asc' },
   headers: {
     accept: 'application/json',
     Authorization: `Bearer ${apiKey}`
@@ -14,13 +14,11 @@ const options = {
 };
 
 export const apiMovies = async () => {
-  const movies = await axios.request(options)
-    .then(res => {
-      return res.data;
-    })
-    .catch(err => {
-      console.error(err);
-      throw err;
-    });
-  return movies.results;
+  try {
+    const response = await axios.request(options)
+    return response.data.results
+  } catch (err) {
+    console.error(err);
+    throw err;
+  }
 }
