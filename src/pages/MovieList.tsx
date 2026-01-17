@@ -18,41 +18,65 @@ const MovieList = () => {
   const [query, setQuery] = useSearchParams()
   const currentPage = Number(query.get('page'))
   const currentSearch = query.get('search')
+  const [isLoading, setIsloading] = useState<boolean>(false)
 
   useEffect(() => {
-    if (!currentPage) {
-      setQuery({ page: '1' })
+    try {
+      setIsloading(true)
+      if (!currentPage) {
+        setQuery({ page: '1' })
+      }
+      apiMovies(currentPage).then((result) => {
+        setMovies(result)
+      })
+      apiGenres().then((result) => {
+        setGenres(result)
+      })
+    } catch (error) {
+      console.log(error)
+    } finally {
+      setIsloading(false)
     }
-    apiMovies(currentPage).then((result) => {
-      setMovies(result)
-    })
-    apiGenres().then((result) => {
-      setGenres(result)
-    })
   }, [currentPage])
 
   const performSearch = async () => {
-    if (currentSearch) {
-      const result = await apiSearch(currentSearch, currentPage)
-      setSearchMovies(result)
-      console.log('true')
-    } else {
-      setSearchMovies(movies)
-      console.log('false')
+    try {
+      setIsloading(true)
+      if (currentSearch) {
+        const result = await apiSearch(currentSearch, currentPage)
+        setSearchMovies(result)
+        console.log('true')
+      } else {
+        setSearchMovies(movies)
+        console.log('false')
+      }
+    } catch (error) {
+      console.log(error)
+    } finally {
+      setIsloading(false)
     }
   }
 
   useEffect(() => {
-    const debouncedSearch = debounce(performSearch, 1000)
-    debouncedSearch()
-  }, [movies, currentSearch])
+    try {
+      setIsloading(true)
+      const debouncedSearch = debounce(performSearch, 1000)
+      debouncedSearch()
+    } catch (error) {
+      console.log(error)
+    } finally {
+      setIsloading(false)
+    }
+  }, [movies, currentSearch, query])
 
   const handlePrevPage = (currentSearch: string) => {
+    setIsloading(true)
     if (currentPage < 2) return
     setQuery({ page: (currentPage - 1).toString(), search: currentSearch })
   }
 
   const handleNextPage = (currentSearch: string) => {
+    setIsloading(true)
     setQuery({ page: (currentPage + 1).toString(), search: currentSearch })
   }
 
@@ -117,7 +141,7 @@ const MovieList = () => {
         <div className="flex justify-center mt-10">
           <button
             onClick={() => handlePrevPage(currentSearch || '')}
-            disabled={currentPage === 1}
+            disabled={currentPage === 1 || isLoading}
             className={`
             flex items-center gap-2 px-6 py-2 rounded-full border border-input text-foreground font-semibold transition
             disabled:bg-gray-300 disabled:border-gray-400 disabled:text-gray-500 disabled:opacity-60 disabled:cursor-not-allowed
@@ -129,7 +153,7 @@ const MovieList = () => {
           </button>
           <button
             onClick={() => handleNextPage(currentSearch || '')}
-            disabled={searchMovies.length < 20}
+            disabled={searchMovies.length < 20 || isLoading}
             className={`
             flex items-center gap-2 px-6 py-2 rounded-full border border-input text-foreground font-semibold transition
             ml-4
