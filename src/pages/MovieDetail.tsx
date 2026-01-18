@@ -2,10 +2,9 @@ import { Link, useParams } from "react-router"
 import Header from "../components/Header"
 import { ArrowLeft, Calendar, Clock, DollarSign, ExternalLink, Film, Globe, Star, Users } from "lucide-react"
 import { useEffect, useState } from "react"
-
-
 import type { movieDetailType } from "../lib/utility"
 import { apiMovieDetial } from "../api/apiMovieDetail"
+import Footer from "@/components/Footer"
 
 const pathUrl = import.meta.env.VITE_PATH_URL
 
@@ -311,7 +310,9 @@ const MovieDetail = () => {
           </div>
         </div>
       </main >
-    </div >
+
+      <Footer />
+    </div>
   )
 }
 
