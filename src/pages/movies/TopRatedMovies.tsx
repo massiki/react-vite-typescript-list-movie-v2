@@ -27,6 +27,9 @@ const TopRatedMovies = () => {
 
   useEffect(() => {
     const fetchTopRatedMovies = async () => {
+      if (!query.get('page')) {
+        query.set('page', '1')
+      }
       // eslint-disable-next-line react-hooks/rules-of-hooks
       const resTopRatedMoves = await useApiTopRatedMovies(currentPage).then((res) => { return res })
       const resGenres = await apiGenres().then((res) => { return res })
@@ -46,7 +49,7 @@ const TopRatedMovies = () => {
             <div className="flex items-center gap-3">
               <Film className="h-6 w-6 text-primary" />
               <h2 className="text-2xl font-bold text-foreground md:text-3xl">
-                Popular
+                Top
               </h2>
               <span className="rounded-full bg-secondary px-3 py-1 text-sm font-medium text-secondary-foreground">
                 {topRatedMovies.length} Movies
