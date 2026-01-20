@@ -1,4 +1,4 @@
-import { ChevronLeft, ChevronRight, Film, Search } from "lucide-react"
+import { ChevronLeft, ChevronRight, Film, Search, TrendingUp } from "lucide-react"
 import Header from "../../components/Header"
 import MovieCard from "../../components/MovieCard"
 import Footer from "../../components/Footer"
@@ -47,7 +47,22 @@ const MovieList = () => {
       <Header />
 
       <section className="relative overflow-hidden bg-linear-to-br from-primary/10 via-background to-accent/10 py-16 md:py-24">
-        {/* ... hero section ... */}
+        <div className="container relative z-10">
+          <div className="mx-auto max-w-3xl text-center">
+            <div className="mb-6 inline-flex items-center gap-2 rounded-full bg-primary/10 px-4 py-2 text-sm font-medium text-primary">
+              <TrendingUp className="h-4 w-4" />
+              Discover Amazing Movies
+            </div>
+            <h1 className="mb-6 text-4xl font-bold tracking-tight text-foreground md:text-5xl lg:text-6xl">
+              Welcome to MovieF
+              <span className="block text-primary">Magic Movie</span>
+            </h1>
+            <p className="text-lg text-muted-foreground md:text-xl">
+              Explore our curated collection of must-watch movies. From timeless
+              classics to the latest blockbusters, find your next favorite film.
+            </p>
+          </div>
+        </div>
       </section>
 
       <main className="container py-12 md:py-16">
