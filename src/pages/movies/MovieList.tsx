@@ -7,6 +7,7 @@ import type { genresType, movieType } from "../../lib/utility"
 import { useSearchParams } from "react-router"
 import { useMovieSearchAndPagination } from "../../hooks/useMoviesSearchAndPagination"
 import { useApiMovies } from "@/api/useApiMovies"
+import SpinnerLoading from "@/components/SpinnerLoading"
 
 const MovieList = () => {
   const [movies, setMovies] = useState<movieType[]>([])
@@ -21,24 +22,27 @@ const MovieList = () => {
     handlePrevPage,
     handleNextPage,
     handleSearchChange,
+    setIsLoading,
   } = useMovieSearchAndPagination({
     defaultMovies: movies,
   })
 
   useEffect(() => {
-    try {
-      if (!query.get('page')) {
-        query.set('page', '1')
+    const load = async () => {
+      setIsLoading(true)
+      try {
+        if (!query.get("page")) {
+          query.set("page", "1")
+        }
+        const resMovieList = await apiMoviesList(currentPage).then((res) => { return res })
+        const resGenres = await apiGenres().then((res) => { return res })
+        setMovies(resMovieList)
+        setGenres(resGenres)
+      } catch (error) {
+        console.log(error)
       }
-      apiMoviesList(currentPage).then((res) => {
-        setMovies(res)
-      })
-      apiGenres().then((result) => {
-        setGenres(result)
-      })
-    } catch (error) {
-      console.log(error)
     }
+    load()
   }, [currentPage])
 
   return (
@@ -93,21 +97,25 @@ const MovieList = () => {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:gap-6">
-          {searchMovies.map((movie) => (
-            <MovieCard key={movie.id} movie={movie} genres={genres} />
-          ))}
-        </div>
+        {isLoading ? (
+          <SpinnerLoading />
+        ) : (
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:gap-6">
+            {searchMovies.map((movie) => (
+              <MovieCard key={movie.id} movie={movie} genres={genres} />
+            ))}
+          </div>
+        )}
 
         <div className="flex justify-center mt-10">
           <button
             onClick={() => handlePrevPage(currentSearch || '')}
             disabled={currentPage === 1 || isLoading}
             className={`
-            flex items-center gap-2 px-6 py-2 rounded-full border border-input text-foreground font-semibold transition
-            disabled:bg-gray-300 disabled:border-gray-400 disabled:text-gray-500 disabled:opacity-60 disabled:cursor-not-allowed
-            hover:bg-primary hover:text-primary-foreground hover:border-primary cursor-pointer
-          `}
+                  flex items-center gap-2 px-6 py-2 rounded-full border border-input text-foreground font-semibold transition
+                  disabled:bg-gray-300 disabled:border-gray-400 disabled:text-gray-500 disabled:opacity-60 disabled:cursor-not-allowed
+                  hover:bg-primary hover:text-primary-foreground hover:border-primary cursor-pointer
+                `}
           >
             <ChevronLeft />
             Prev
@@ -116,11 +124,11 @@ const MovieList = () => {
             onClick={() => handleNextPage(currentSearch || '')}
             disabled={searchMovies.length < 20 || isLoading}
             className={`
-            flex items-center gap-2 px-6 py-2 rounded-full border border-input text-foreground font-semibold transition
-            ml-4
-            disabled:bg-gray-300 disabled:border-gray-400 disabled:text-gray-500 disabled:opacity-60 disabled:cursor-not-allowed
-            hover:bg-primary hover:text-primary-foreground hover:border-primary cursor-pointer
-          `}
+                flex items-center gap-2 px-6 py-2 rounded-full border border-input text-foreground font-semibold transition
+                ml-4
+                disabled:bg-gray-300 disabled:border-gray-400 disabled:text-gray-500 disabled:opacity-60 disabled:cursor-not-allowed
+                hover:bg-primary hover:text-primary-foreground hover:border-primary cursor-pointer
+              `}
           >
             Next
             <ChevronRight />

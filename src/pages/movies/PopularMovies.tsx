@@ -2,6 +2,7 @@ import { useApiMovies } from "@/api/useApiMovies"
 import Footer from "@/components/Footer"
 import Header from "@/components/Header"
 import MovieCard from "@/components/MovieCard"
+import SpinnerLoading from "@/components/SpinnerLoading"
 import { useMovieSearchAndPagination } from "@/hooks/useMoviesSearchAndPagination"
 import type { genresType, movieType } from "@/lib/utility"
 import { ChevronLeft, ChevronRight, Film, Search } from "lucide-react"
@@ -21,12 +22,14 @@ const PopularMovies = () => {
     handlePrevPage,
     handleNextPage,
     handleSearchChange,
+    setIsLoading,
   } = useMovieSearchAndPagination({
     defaultMovies: popularMovies,
   })
 
   useEffect(() => {
     const fetchPopularMovies = async () => {
+      setIsLoading(true)
       const resPopularMovies = await apiPopularMovies(currentPage).then((res) => { return res })
       const resGenres = await apiGenres().then((res) => { return res })
       setPopularMovies(resPopularMovies)
@@ -68,12 +71,15 @@ const PopularMovies = () => {
               </div>
             </div>
           </div>
-
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:gap-6">
-            {searchMovies.map((movie) => (
-              <MovieCard key={movie.id} movie={movie} genres={genres} />
-            ))}
-          </div>
+          {isLoading ? (
+            <SpinnerLoading />
+          ) : (
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:gap-6">
+              {searchMovies.map((movie) => (
+                <MovieCard key={movie.id} movie={movie} genres={genres} />
+              ))}
+            </div>
+          )}
 
           <div className="flex justify-center mt-10">
             <button

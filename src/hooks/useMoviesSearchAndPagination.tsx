@@ -82,5 +82,6 @@ export const useMovieSearchAndPagination = ({
     handleNextPage,
     handleSearchChange,
     setQuery,
+    setIsLoading,
   }
 }
