@@ -2,13 +2,12 @@ import axios from "axios";
 
 const baseUrl = import.meta.env.VITE_BASE_URL
 const apiKey = import.meta.env.VITE_API_KEY
-const baseGenres = import.meta.env.VITE_BASE_GENRES
 
 export const useApiMovies = () => {
-  const options = (url: string, queryPage: number | null) => ({
+  const options = (url: string, queryPage: number | null, querySearch: string | null) => ({
     method: 'GET',
     url: url,
-    params: { page: queryPage },
+    params: { page: queryPage, query: querySearch },
     headers: {
       accept: 'application/json',
       Authorization: `Bearer ${apiKey}`
@@ -19,7 +18,7 @@ export const useApiMovies = () => {
     const URL = `${baseUrl}/movie/now_playing`
 
     try {
-      const response = await axios.request(options(URL, queryPage))
+      const response = await axios.request(options(URL, queryPage, null))
       return response.data.results
     } catch (err) {
       console.error(err);
@@ -28,9 +27,9 @@ export const useApiMovies = () => {
   }
 
   const apiGenres = async () => {
-    const URL = `${baseGenres}`
+    const URL = `${baseUrl}/genre/movie/list`
 
-    const genres = await axios.request(options(URL, null))
+    const genres = await axios.request(options(URL, null, null))
       .then(res => {
         return res.data;
       })
@@ -45,7 +44,7 @@ export const useApiMovies = () => {
     const URL = `${baseUrl}/movie/${movieId}`
 
     try {
-      const response = await axios.request(options(URL, null))
+      const response = await axios.request(options(URL, null, null))
       return response.data
     } catch (error) {
       console.log(error)
@@ -57,7 +56,7 @@ export const useApiMovies = () => {
     const URL = `${baseUrl}/movie/popular`
 
     try {
-      const response = await axios.request(options(URL, currentPage))
+      const response = await axios.request(options(URL, currentPage, null))
       return response.data.results
     } catch (err) {
       console.error(err);
@@ -69,7 +68,7 @@ export const useApiMovies = () => {
     const URL = `${baseUrl}/movie/top_rated`
 
     try {
-      const response = await axios.request(options(URL, currentPage))
+      const response = await axios.request(options(URL, currentPage, null))
       return response.data.results
     } catch (err) {
       console.error(err);
@@ -81,7 +80,7 @@ export const useApiMovies = () => {
     const URL = `${baseUrl}/movie/upcoming`
 
     try {
-      const response = await axios.request(options(URL, currentPage))
+      const response = await axios.request(options(URL, currentPage, null))
       return response.data.results
     } catch (err) {
       console.error(err);
@@ -89,5 +88,18 @@ export const useApiMovies = () => {
     }
   }
 
-  return { apiMoviesList, apiMovieDetial, apiPopularMovies, apiGenres, apiTopRatedMovies, apiUpcommingMovies }
+  const apiSearch = async (currentSearch: string, currentPage: number) => {
+    const URL = `${baseUrl}/search/movie`
+
+    try {
+      const response = await axios.request(options(URL, currentPage, currentSearch))
+      return response.data.results
+    } catch (error) {
+      console.log(error)
+      throw error
+    }
+
+  }
+
+  return { apiMoviesList, apiMovieDetial, apiPopularMovies, apiGenres, apiTopRatedMovies, apiUpcommingMovies, apiSearch }
 }
