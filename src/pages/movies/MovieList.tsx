@@ -2,18 +2,18 @@ import { ChevronLeft, ChevronRight, Film, Search, TrendingUp } from "lucide-reac
 import Header from "../../components/Header"
 import MovieCard from "../../components/MovieCard"
 import Footer from "../../components/Footer"
-import { apiMovies } from "../../api/apiMovies"
 import { useEffect, useState } from "react"
 import type { genresType, movieType } from "../../lib/utility"
-import { apiGenres } from "../../api/apiGenres"
 import { useSearchParams } from "react-router"
 import { useMovieSearchAndPagination } from "../../hooks/useMoviesSearchAndPagination"
+import { useApiMovies } from "@/api/useApiMovies"
 
 const MovieList = () => {
   const [movies, setMovies] = useState<movieType[]>([])
   const [genres, setGenres] = useState<genresType[]>([])
   const [query] = useSearchParams()
   const currentPage = Number(query.get('page')) || 1
+  const { apiMoviesList, apiGenres } = useApiMovies()
   const {
     searchMovies,
     isLoading,
@@ -30,8 +30,8 @@ const MovieList = () => {
       if (!query.get('page')) {
         query.set('page', '1')
       }
-      apiMovies(currentPage).then((result) => {
-        setMovies(result)
+      apiMoviesList(currentPage).then((res) => {
+        setMovies(res)
       })
       apiGenres().then((result) => {
         setGenres(result)
@@ -40,7 +40,6 @@ const MovieList = () => {
       console.log(error)
     }
   }, [currentPage])
-
 
   return (
     <div className="min-h-screen bg-background">

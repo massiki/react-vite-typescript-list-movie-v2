@@ -1,5 +1,4 @@
-import { apiGenres } from "@/api/apiGenres"
-import { useApiUpcommingMovies } from "@/api/useApiUpcommingMovies"
+import { useApiMovies } from "@/api/useApiMovies"
 import Footer from "@/components/Footer"
 import Header from "@/components/Header"
 import MovieCard from "@/components/MovieCard"
@@ -14,6 +13,7 @@ const TopRatedMovies = () => {
   const [genres, setGenres] = useState<genresType[]>([])
   const [query] = useSearchParams()
   const currentPage = Number(query.get('page'))
+  const { apiUpcommingMovies, apiGenres } = useApiMovies()
   const {
     searchMovies,
     isLoading,
@@ -27,11 +27,7 @@ const TopRatedMovies = () => {
 
   useEffect(() => {
     const fetchTopRatedMovies = async () => {
-      if (!query.get('page')) {
-        query.set('page', '1')
-      }
-      // eslint-disable-next-line react-hooks/rules-of-hooks
-      const resTopRatedMoves = await useApiUpcommingMovies(currentPage).then((res) => { return res })
+      const resTopRatedMoves = await apiUpcommingMovies(currentPage).then((res) => { return res })
       const resGenres = await apiGenres().then((res) => { return res })
       setUpcommingMovies(resTopRatedMoves)
       setGenres(resGenres)
