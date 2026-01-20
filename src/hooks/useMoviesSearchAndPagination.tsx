@@ -1,9 +1,8 @@
-// src/hooks/useMovieSearchAndPagination.ts
 import { useEffect, useState } from "react"
 import { useSearchParams } from "react-router"
 import { useDebounce } from "./useDebounce"
-import { apiSearch } from "@/api/apiSearch"
 import type { movieType } from "@/lib/utility"
+import { useApiMovies } from "@/api/useApiMovies"
 
 const DELAY = 1000
 
@@ -20,6 +19,7 @@ export const useMovieSearchAndPagination = ({
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [query, setQuery] = useSearchParams()
   const { debounce } = useDebounce()
+  const { apiSearch } = useApiMovies()
 
   const currentSearch = query.get('search')
   const currentPage = Number(query.get('page')) || 1

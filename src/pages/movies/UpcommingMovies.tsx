@@ -12,7 +12,7 @@ const TopRatedMovies = () => {
   const [upcommingMovies, setUpcommingMovies] = useState<movieType[]>([])
   const [genres, setGenres] = useState<genresType[]>([])
   const [query] = useSearchParams()
-  const currentPage = Number(query.get('page'))
+  const currentPage = Number(query.get('page')) || 1
   const { apiUpcommingMovies, apiGenres } = useApiMovies()
   const {
     searchMovies,
