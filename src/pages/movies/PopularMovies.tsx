@@ -1,5 +1,4 @@
-import { apiGenres } from "@/api/apiGenres"
-import { useApiPopularMovies } from "@/api/useApiPopularMovies"
+import { useApiMovies } from "@/api/useApiMovies"
 import Footer from "@/components/Footer"
 import Header from "@/components/Header"
 import MovieCard from "@/components/MovieCard"
@@ -14,6 +13,7 @@ const PopularMovies = () => {
   const [genres, setGenres] = useState<genresType[]>([])
   const [query] = useSearchParams()
   const currentPage = Number(query.get('page')) || 1
+  const { apiPopularMovies, apiGenres } = useApiMovies()
   const {
     searchMovies,
     isLoading,
@@ -27,10 +27,7 @@ const PopularMovies = () => {
 
   useEffect(() => {
     const fetchPopularMovies = async () => {
-      // eslint-disable-next-line react-hooks/rules-of-hooks
-      const resPopularMovies = await useApiPopularMovies(currentPage).then((res) => {
-        return res
-      })
+      const resPopularMovies = await apiPopularMovies(currentPage).then((res) => { return res })
       const resGenres = await apiGenres().then((res) => { return res })
       setPopularMovies(resPopularMovies)
       setGenres(resGenres)

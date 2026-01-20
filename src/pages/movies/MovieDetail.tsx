@@ -3,14 +3,15 @@ import Header from "../../components/Header"
 import { ArrowLeft, Calendar, Clock, DollarSign, ExternalLink, Film, Globe, Star, Users } from "lucide-react"
 import { useEffect, useState } from "react"
 import type { movieDetailType } from "../../lib/utility"
-import { apiMovieDetial } from "../../api/apiMovieDetail"
 import Footer from "@/components/Footer"
+import { useApiMovies } from "@/api/useApiMovies"
 
 const pathUrl = import.meta.env.VITE_PATH_URL
 
 const MovieDetail = () => {
   const { id } = useParams()
   const [movie, setMovie] = useState<movieDetailType | null>(null)
+  const { apiMovieDetial } = useApiMovies()
 
   const handleMovie = async () => {
     const response = await apiMovieDetial(Number(id))
