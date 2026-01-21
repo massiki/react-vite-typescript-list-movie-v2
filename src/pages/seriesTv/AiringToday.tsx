@@ -7,7 +7,7 @@ import { Search, Tv } from "lucide-react"
 import { useEffect, useState } from "react"
 
 const AiringToday = () => {
-  const { apiAiringTodaySeriesTv } = useApiSeriesTv()
+  const { apiAiringTodaySeriesTv, apiGenresSeriesTv } = useApiSeriesTv()
   const [airingTodaySeriesTv, setAiringTodaySeriesTv] = useState<seriesTvType[]>([])
 
   useEffect(() => {
@@ -18,7 +18,7 @@ const AiringToday = () => {
     load()
   }, [])
 
-  console.log(airingTodaySeriesTv)
+  console.log(apiGenresSeriesTv().then((res) => { return res }))
 
   return (
     <div className="min-h-screen bg-background">
