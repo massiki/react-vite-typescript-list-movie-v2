@@ -43,5 +43,16 @@ export const useApiSeriesTv = () => {
     return hitApi(URL)
   }
 
-  return { apiAiringTodaySeriesTv, ApiAiringSoonSeriesTv, apiPopularSeriesTv, apiTopRatedSeriesTv }
+  const apiGenresSeriesTv = async () => {
+    const URL = `${baseUrl}/genre/tv/list`
+    try {
+      const response = await axios.request(options(URL))
+      return response.data.genres
+    } catch (error) {
+      console.log(error)
+      throw error
+    }
+  }
+
+  return { apiAiringTodaySeriesTv, ApiAiringSoonSeriesTv, apiPopularSeriesTv, apiTopRatedSeriesTv, apiGenresSeriesTv }
 } 
