@@ -1,9 +1,25 @@
+import { useApiSeriesTv } from "@/api/useApiSeriesTv"
 import Footer from "@/components/Footer"
 import Header from "@/components/Header"
 import SeriesTvCard from "@/components/SeriesTvCard"
+import type { seriesTvType } from "@/lib/utility"
 import { Search, Tv } from "lucide-react"
+import { useEffect, useState } from "react"
 
 const AiringToday = () => {
+  const { apiAiringTodaySeriesTv } = useApiSeriesTv()
+  const [airingTodaySeriesTv, setAiringTodaySeriesTv] = useState<seriesTvType[]>([])
+
+  useEffect(() => {
+    const load = async () => {
+      const resSereiesTv = await apiAiringTodaySeriesTv().then((res) => { return res })
+      setAiringTodaySeriesTv(resSereiesTv)
+    }
+    load()
+  }, [])
+
+  console.log(airingTodaySeriesTv)
+
   return (
     <div className="min-h-screen bg-background">
       <Header />
@@ -16,7 +32,7 @@ const AiringToday = () => {
               Airing Today
             </h2>
             <span className="rounded-full bg-secondary px-3 py-1 text-sm font-medium text-secondary-foreground">
-              20 Series TV
+              {airingTodaySeriesTv.length} Series TV
             </span>
           </div>
 
@@ -38,13 +54,9 @@ const AiringToday = () => {
 
         </div>
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 text-start">
-          <SeriesTvCard />
-          <SeriesTvCard />
-          <SeriesTvCard />
-          <SeriesTvCard />
-          <SeriesTvCard />
-          <SeriesTvCard />
-          <SeriesTvCard />
+          {airingTodaySeriesTv.map((data) => (
+            <SeriesTvCard key={data.id} seriesTv={data} />
+          ))}
         </div>
       </main >
 
