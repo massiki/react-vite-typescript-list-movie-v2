@@ -2,11 +2,11 @@ import { Link } from "react-router"
 import { Card, CardContent } from "./ui/card"
 import { Calendar, Star } from "lucide-react"
 import { Badge } from "./ui/badge"
-import type { seriesTvType } from "@/lib/utility"
+import type { genresType, seriesTvType } from "@/lib/utility"
 
 const pathUrl = import.meta.env.VITE_PATH_URL
 
-const SeriesTvCard = ({ seriesTv }: { seriesTv: seriesTvType }) => {
+const SeriesTvCard = ({ seriesTv, genres }: { seriesTv: seriesTvType, genres: genresType[] }) => {
   return (
     <Link to={`/series-tv/detail/${seriesTv.id}`}>
       <Card className="p-0 gap-0 group overflow-hidden border-border bg-card transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-primary/10">
@@ -46,13 +46,17 @@ const SeriesTvCard = ({ seriesTv }: { seriesTv: seriesTvType }) => {
           </div>
 
           <div className="flex flex-wrap gap-1">
-            {seriesTv.genre_ids.map((genresId) => (
-              <Badge
-                className="rounded-full bg-accent px-2 py-0.5 text-xs text-accent-foreground"
-              >
-                {genresId}
-              </Badge>
-            ))}
+            {seriesTv.genre_ids.slice(0, 2).map((genresId) => {
+              const genre = genres.find((g) => Number(g.id) === Number(genresId))
+              return (
+                <Badge
+                  key={genresId}
+                  className="rounded-full bg-accent px-2 py-0.5 text-xs text-accent-foreground"
+                >
+                  {genre?.name}
+                </Badge>
+              )
+            })}
           </div>
         </CardContent>
       </Card>
