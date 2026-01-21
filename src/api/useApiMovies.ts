@@ -14,35 +14,54 @@ export const useApiMovies = () => {
     }
   });
 
-  const apiMoviesList = async (queryPage: number) => {
-    const URL = `${baseUrl}/movie/now_playing`
-
+  const hitApi = async (url: string, queryPage: number | null, querySearch: string | null) => {
     try {
-      const response = await axios.request(options(URL, queryPage, null))
+      const response = await axios.request(options(url, queryPage, querySearch));
       return response.data.results
-    } catch (err) {
-      console.error(err);
-      throw err;
+    } catch (error) {
+      console.log(error)
+      throw error
     }
+  }
+
+  const apiMoviesList = (queryPage: number) => {
+    const URL = `${baseUrl}/movie/now_playing`
+    return hitApi(URL, queryPage, null)
+  }
+
+  const apiPopularMovies = (currentPage: number) => {
+    const URL = `${baseUrl}/movie/popular`
+    return hitApi(URL, currentPage, null)
+  }
+
+  const apiTopRatedMovies = (currentPage: number) => {
+    const URL = `${baseUrl}/movie/top_rated`
+    return hitApi(URL, currentPage, null)
+  }
+
+  const apiUpcommingMovies = (currentPage: number) => {
+    const URL = `${baseUrl}/movie/upcoming`
+    return hitApi(URL, currentPage, null)
+  }
+
+  const apiSearch = (currentSearch: string, currentPage: number) => {
+    const URL = `${baseUrl}/search/movie`
+    return hitApi(URL, currentPage, currentSearch)
   }
 
   const apiGenres = async () => {
     const URL = `${baseUrl}/genre/movie/list`
-
-    const genres = await axios.request(options(URL, null, null))
-      .then(res => {
-        return res.data;
-      })
-      .catch(err => {
-        console.error(err);
-        throw err;
-      });
-    return genres.genres;
+    try {
+      const response = await axios.request(options(URL, null, null))
+      return response.data.genres
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
   }
 
   const apiMovieDetial = async (movieId: number) => {
     const URL = `${baseUrl}/movie/${movieId}`
-
     try {
       const response = await axios.request(options(URL, null, null))
       return response.data
@@ -50,55 +69,6 @@ export const useApiMovies = () => {
       console.log(error)
       throw error
     }
-  }
-
-  const apiPopularMovies = async (currentPage: number) => {
-    const URL = `${baseUrl}/movie/popular`
-
-    try {
-      const response = await axios.request(options(URL, currentPage, null))
-      return response.data.results
-    } catch (err) {
-      console.error(err);
-      throw err;
-    }
-  }
-
-  const apiTopRatedMovies = async (currentPage: number) => {
-    const URL = `${baseUrl}/movie/top_rated`
-
-    try {
-      const response = await axios.request(options(URL, currentPage, null))
-      return response.data.results
-    } catch (err) {
-      console.error(err);
-      throw err;
-    }
-  }
-
-  const apiUpcommingMovies = async (currentPage: number) => {
-    const URL = `${baseUrl}/movie/upcoming`
-
-    try {
-      const response = await axios.request(options(URL, currentPage, null))
-      return response.data.results
-    } catch (err) {
-      console.error(err);
-      throw err;
-    }
-  }
-
-  const apiSearch = async (currentSearch: string, currentPage: number) => {
-    const URL = `${baseUrl}/search/movie`
-
-    try {
-      const response = await axios.request(options(URL, currentPage, currentSearch))
-      return response.data.results
-    } catch (error) {
-      console.log(error)
-      throw error
-    }
-
   }
 
   return { apiMoviesList, apiMovieDetial, apiPopularMovies, apiGenres, apiTopRatedMovies, apiUpcommingMovies, apiSearch }
