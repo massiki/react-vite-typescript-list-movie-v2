@@ -6,6 +6,7 @@ import MovieDetail from './pages/movies/MovieDetail'
 import PopularMovies from './pages/movies/PopularMovies'
 import TopRatedMovies from './pages/movies/TopRatedMovies'
 import UpcommingMovies from './pages/movies/UpcommingMovies'
+import AiringToday from './pages/seriesTv/AiringToday'
 
 function App() {
 
@@ -17,6 +18,7 @@ function App() {
         <Route path='/movie/top-rated' element={<TopRatedMovies />} />
         <Route path='/movie/upcomming' element={<UpcommingMovies />} />
         <Route path='/movie/:id' element={<MovieDetail />} />
+        <Route path='/series-tv/airing-today' element={<AiringToday />} />
         <Route path='*' element={<NotFound />} />
       </Routes>
     </>
