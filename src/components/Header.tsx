@@ -14,7 +14,7 @@ const movieLinks = [
 ]
 
 const seriesTvLinks = [
-  { title: 'Airing Today', href: '/' },
+  { title: 'Airing Today', href: '/series-tv/airing-today' },
   { title: 'Airing Soon', href: '/' },
   { title: 'Popular', href: '/' },
   { title: 'Top Rated', href: '/' },
