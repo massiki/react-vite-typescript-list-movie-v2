@@ -2,26 +2,36 @@ import { useApiSeriesTv } from "@/api/useApiSeriesTv"
 import Footer from "@/components/Footer"
 import Header from "@/components/Header"
 import SeriesTvCard from "@/components/SeriesTvCard"
+import { useSeriesTvSearchAndPagination } from "@/hooks/useSeriesTvSearchAndPagination"
 import type { genresType, seriesTvType } from "@/lib/utility"
-import { Search, Tv } from "lucide-react"
+import { ChevronLeft, ChevronRight, Search, Tv } from "lucide-react"
 import { useEffect, useState } from "react"
+import SpinnerLoading from "@/components/SpinnerLoading"
 
 const AiringToday = () => {
   const { apiAiringTodaySeriesTv, apiGenresSeriesTv } = useApiSeriesTv()
   const [airingTodaySeriesTv, setAiringTodaySeriesTv] = useState<seriesTvType[]>([])
   const [genres, setGenres] = useState<genresType[]>([])
+  const {
+    currentPage,
+    currentSearch,
+    handleNextPage,
+    handlePrevPage,
+    handleSearchChange,
+    isLoading,
+    searchSeriesTv,
+    setIsLoading } = useSeriesTvSearchAndPagination({ defaultSeriesTv: airingTodaySeriesTv })
 
   useEffect(() => {
     const load = async () => {
-      const resSereiesTv = await apiAiringTodaySeriesTv().then((res) => { return res })
+      setIsLoading(true)
+      const resSereiesTv = await apiAiringTodaySeriesTv(currentPage).then((res) => { return res })
       const resGenresSeriesTv = await apiGenresSeriesTv().then((res) => { return res })
       setAiringTodaySeriesTv(resSereiesTv)
       setGenres(resGenresSeriesTv)
     }
     load()
-  }, [])
-
-  console.log(apiGenresSeriesTv().then((res) => { return res }))
+  }, [currentPage])
 
   return (
     <div className="min-h-screen bg-background">
@@ -45,8 +55,8 @@ const AiringToday = () => {
               <input
                 type="text"
                 placeholder="Search series tv..."
-                // value={currentSearch || ""}
-                // onChange={(e) => handleSearchChange(e.target.value)}
+                value={currentSearch || ""}
+                onChange={(e) => handleSearchChange(e.target.value)}
                 className="peer flex h-12 w-full rounded-lg border-2 border-input bg-background px-10 py-2 text-base font-medium text-foreground transition-all duration-150 focus:border-primary focus:ring-4 focus:ring-primary/20 focus:outline-none placeholder:text-muted-foreground shadow-sm md:text-sm"
               />
               <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground group-focus-within:text-primary transition-colors duration-150">
@@ -56,10 +66,42 @@ const AiringToday = () => {
           </div>
 
         </div>
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 text-start">
-          {airingTodaySeriesTv.map((data) => (
-            <SeriesTvCard key={data.id} seriesTv={data} genres={genres} />
-          ))}
+        {isLoading ? (
+          <SpinnerLoading />
+        ) : (
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 text-start">
+            {searchSeriesTv.map((data) => (
+              <SeriesTvCard key={data.id} seriesTv={data} genres={genres} />
+            ))}
+          </div>
+        )}
+
+        <div className="flex justify-center mt-10">
+          <button
+            onClick={() => handlePrevPage(currentSearch || '')}
+            disabled={currentPage === 1 || isLoading}
+            className={`
+                  flex items-center gap-2 px-6 py-2 rounded-full border border-input text-foreground font-semibold transition
+                  disabled:bg-gray-300 disabled:border-gray-400 disabled:text-gray-500 disabled:opacity-60 disabled:cursor-not-allowed
+                  hover:bg-primary hover:text-primary-foreground hover:border-primary cursor-pointer
+                `}
+          >
+            <ChevronLeft />
+            Prev
+          </button>
+          <button
+            onClick={() => handleNextPage(currentSearch || '')}
+            disabled={searchSeriesTv.length < 20 || isLoading}
+            className={`
+                flex items-center gap-2 px-6 py-2 rounded-full border border-input text-foreground font-semibold transition
+                ml-4
+                disabled:bg-gray-300 disabled:border-gray-400 disabled:text-gray-500 disabled:opacity-60 disabled:cursor-not-allowed
+                hover:bg-primary hover:text-primary-foreground hover:border-primary cursor-pointer
+              `}
+          >
+            Next
+            <ChevronRight />
+          </button>
         </div>
       </main >
 
