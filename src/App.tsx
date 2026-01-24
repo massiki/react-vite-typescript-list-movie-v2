@@ -10,6 +10,7 @@ import AiringToday from './pages/seriesTv/AiringToday'
 import SeriesTvDetail from './pages/seriesTv/SeriesTvDetail'
 import AiringSoon from './pages/seriesTv/AiringSoon'
 import PopularSeriesTv from './pages/seriesTv/PopularSeriesTv'
+import TopRatedSeriesTv from './pages/seriesTv/TopRatedSeriesTv'
 
 function App() {
 
@@ -24,6 +25,7 @@ function App() {
         <Route path='/series-tv/airing-today' element={<AiringToday />} />
         <Route path='/series-tv/airing-soon' element={<AiringSoon />} />
         <Route path='/series-tv/popular' element={<PopularSeriesTv />} />
+        <Route path='/series-tv/top-rated' element={<TopRatedSeriesTv />} />
         <Route path='/series-tv/detail/:id' element={<SeriesTvDetail />} />
         <Route path='*' element={<NotFound />} />
       </Routes>

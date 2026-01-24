@@ -42,9 +42,9 @@ export const useApiSeriesTv = () => {
     return hitApi(URL, null, queryPage)
   }
 
-  const apiTopRatedSeriesTv = () => {
+  const apiTopRatedSeriesTv = (queryPage: number) => {
     const URL = `${baseUrl}/tv/top_rated`
-    return hitApi(URL)
+    return hitApi(URL, null, queryPage)
   }
 
   const apiSearchSeriesTv = (querySearch: string, queryPage: number) => {
