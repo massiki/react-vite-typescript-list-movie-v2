@@ -32,9 +32,9 @@ export const useApiSeriesTv = () => {
     const URL = `${baseUrl}/tv/airing_today`
     return hitApi(URL, null, queryPage)
   }
-  const ApiAiringSoonSeriesTv = () => {
+  const ApiAiringSoonSeriesTv = (queryPage: number) => {
     const URL = `${baseUrl}/tv/on_the_air`
-    return hitApi(URL)
+    return hitApi(URL, null, queryPage)
   }
 
   const apiPopularSeriesTv = () => {
