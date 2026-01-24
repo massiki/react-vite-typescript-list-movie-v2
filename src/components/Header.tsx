@@ -43,8 +43,8 @@ const Header = () => {
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-40 bg-popover">
               {movieLinks.map((link, index) => (
-                <DropdownMenuItem asChild>
-                  <Link key={index}
+                <DropdownMenuItem key={index} asChild>
+                  <Link
                     to={`${link.href}`}
                     className="w-full cursor-pointer"
                   >
