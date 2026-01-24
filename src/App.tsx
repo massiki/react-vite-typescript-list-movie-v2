@@ -8,6 +8,7 @@ import TopRatedMovies from './pages/movies/TopRatedMovies'
 import UpcommingMovies from './pages/movies/UpcommingMovies'
 import AiringToday from './pages/seriesTv/AiringToday'
 import SeriesTvDetail from './pages/seriesTv/SeriesTvDetail'
+import AiringSoon from './pages/seriesTv/AiringSoon'
 
 function App() {
 
@@ -20,6 +21,7 @@ function App() {
         <Route path='/movie/upcomming' element={<UpcommingMovies />} />
         <Route path='/movie/:id' element={<MovieDetail />} />
         <Route path='/series-tv/airing-today' element={<AiringToday />} />
+        <Route path='/series-tv/airing-soon' element={<AiringSoon />} />
         <Route path='/series-tv/detail/:id' element={<SeriesTvDetail />} />
         <Route path='*' element={<NotFound />} />
       </Routes>

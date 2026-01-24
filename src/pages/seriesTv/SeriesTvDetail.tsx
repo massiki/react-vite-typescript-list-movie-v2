@@ -334,7 +334,7 @@ const SeriesTvDetail = () => {
               </h3>
               <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
                 {seriesTv?.seasons.map((data) => (
-                  <div
+                  <div key={data.id}
                     className="flex gap-3 rounded-lg bg-muted/50 p-3"
                   >
                     <img
@@ -404,8 +404,8 @@ const SeriesTvDetail = () => {
                 Production Countries
               </h3>
               <div className="flex flex-wrap gap-2">
-                {seriesTv?.production_countries.map((data) => (
-                  <div className="inline-block rounded-full border border-accent-foreground bg-accent/80 px-4 py-2 text-sm font-semibold text-accent-foreground shadow ">
+                {seriesTv?.production_countries.map((data, index) => (
+                  <div key={index} className="inline-block rounded-full border border-accent-foreground bg-accent/80 px-4 py-2 text-sm font-semibold text-accent-foreground shadow ">
                     {data.name}
                   </div>
                 ))}
