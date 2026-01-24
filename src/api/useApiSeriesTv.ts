@@ -37,9 +37,9 @@ export const useApiSeriesTv = () => {
     return hitApi(URL, null, queryPage)
   }
 
-  const apiPopularSeriesTv = () => {
+  const apiPopularSeriesTv = (queryPage: number) => {
     const URL = `${baseUrl}/tv/popular`
-    return hitApi(URL)
+    return hitApi(URL, null, queryPage)
   }
 
   const apiTopRatedSeriesTv = () => {
