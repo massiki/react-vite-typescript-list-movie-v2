@@ -8,9 +8,9 @@ import type { genresType, seriesTvType } from "@/lib/utility"
 import { ChevronLeft, ChevronRight, Search, Tv } from "lucide-react"
 import { useEffect, useState } from "react"
 
-const AiringSoon = () => {
-  const { ApiAiringSoonSeriesTv, apiGenresSeriesTv } = useApiSeriesTv()
-  const [airingSoonSeriesTv, setAiringSoonSeriesTv] = useState<seriesTvType[]>([])
+const PopularSeriesTv = () => {
+  const { apiPopularSeriesTv, apiGenresSeriesTv } = useApiSeriesTv()
+  const [popularSeriesTv, setPopularSeriesTv] = useState<seriesTvType[]>([])
   const [genres, setGenres] = useState<genresType[]>([])
   const {
     currentPage,
@@ -20,14 +20,14 @@ const AiringSoon = () => {
     handleSearchChange,
     isLoading,
     searchSeriesTv,
-    setIsLoading } = useSeriesTvSearchAndPagination({ defaultSeriesTv: airingSoonSeriesTv })
+    setIsLoading } = useSeriesTvSearchAndPagination({ defaultSeriesTv: popularSeriesTv })
 
   useEffect(() => {
     const load = async () => {
       setIsLoading(true)
-      const resSereiesTv = await ApiAiringSoonSeriesTv(currentPage).then((res) => { return res })
+      const resSereiesTv = await apiPopularSeriesTv(currentPage).then((res) => { return res })
       const resGenresSeriesTv = await apiGenresSeriesTv().then((res) => { return res })
-      setAiringSoonSeriesTv(resSereiesTv)
+      setPopularSeriesTv(resSereiesTv)
       setGenres(resGenresSeriesTv)
     }
     load()
@@ -42,10 +42,10 @@ const AiringSoon = () => {
           <div className="flex items-center gap-3">
             <Tv className="h-6 w-6 text-primary" />
             <h2 className="text-2xl font-bold text-foreground md:text-3xl">
-              Airing Soon
+              Popular
             </h2>
             <span className="rounded-full bg-secondary px-3 py-1 text-sm font-medium text-secondary-foreground">
-              {airingSoonSeriesTv.length} Series TV
+              {popularSeriesTv.length} Series TV
             </span>
           </div>
 
@@ -110,4 +110,4 @@ const AiringSoon = () => {
   )
 }
 
-export default AiringSoon
+export default PopularSeriesTv
